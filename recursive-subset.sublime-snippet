@@ -1,0 +1,30 @@
+<snippet>
+	<content><![CDATA[
+
+def get_subsets_recursive(input_set):
+    if not input_set:
+        return [set()]
+
+    input_list = list(input_set)
+    subsets = []
+
+    first_element = input_list[0]
+    remaining_set = set(input_list[1:])
+
+    for subset in get_subsets_recursive(remaining_set):
+        subsets.append(subset)
+        subsets.append(subset | {first_element})
+
+    return subsets
+
+# Example usage
+input_set = {1, 2, 3}
+subsets = get_subsets_recursive(input_set)
+print(subsets)
+
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>recursive-subsets</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<scope>source.python</scope>
+</snippet>
