@@ -1,0 +1,46 @@
+<snippet>
+    <content><![CDATA[
+-- 表结构
+CREATE TABLE Comments (
+  comment_id SERIAL PRIMARY KEY,
+  parent_id BIGINT UNSIGNED,
+  author VARCHAR(20),
+  content VARCHAR(255)
+);
+
+-- 插入数据
+INSERT INTO Comments (comment_id, parent_id, author, content) VALUES
+(1, null, 'Fran', '这个Bug的成因是什么'),
+(2, 1, 'Ollie', '我觉得是一个空指针'),
+(3, 2, 'Fran', '不，我查过了'),
+(4, 1, 'Kukla', '我们需要查无效输入'),
+(5, 4, 'Ollie', '是的，那是个问题'),
+(6, 4, 'Fran', '好，查一下吧'),
+(7, 6, 'Kukla', '解决了'),
+(8, 7, 'Fran', '非常棒');
+
+-- 递归查找评论id为4的所有子评论
+WITH RECURSIVE cte AS (
+  SELECT * FROM Comments WHERE comment_id = 4    -- 条件：评论id = 4
+  UNION                                          -- 递归：父评论id为此评论id的评论
+  SELECT c.* FROM Comments c JOIN cte t WHERE c.parent_id = t.comment_id
+)
+SELECT * FROM cte;
+
+
+
+
+
+
+--- random select
+
+SELECT * FROM Bugs
+WHERE bug_id >= (SELECT FLOOR(RAND() * (SELECT MAX(bug_id) FROM Bugs)))
+ORDER BY bug_id LIMIT 1;
+
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>database</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<scope>source.python</scope>
+</snippet>
