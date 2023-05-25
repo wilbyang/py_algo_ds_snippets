@@ -9,6 +9,9 @@
           -DartifactId=test \
           -Dversion=1.21
 
+          mvn package
+          java -jar target/benchmarks.jar
+
 package org.sample;
 
 import org.openjdk.jmh.annotations.*;
